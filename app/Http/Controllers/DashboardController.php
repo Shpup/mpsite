@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Store;
+use App\Models\MarketplaceConnection;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function index($storeSlug = null)
+    public function index()
     {
-        $connectedStores = Store::where('is_connected', true)->get();
-        $selectedStore = $storeSlug ? Store::where('slug', $storeSlug)->first() : $connectedStores->first();
-        return view('dashboard', compact('connectedStores', 'selectedStore'));
+        $connectedStores = MarketplaceConnection::where('user_id', auth()->id())
+            ->where('is_connected', true)
+            ->get();
+
+        return view('dashboard', compact('connectedStores'));
     }
 }
