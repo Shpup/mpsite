@@ -18,17 +18,7 @@
 </head>
 <body>
 <!-- Шапка -->
-<header class="header">
-    <div class="logo flex items-center">
-        <span>bu</span>
-    </div>
-    <div class="flex items-center space-x-4">
-        <input type="text" placeholder="Поиск по SKU" class="border rounded p-1">
-        <button class="text-gray-500"><i class="fas fa-search"></i></button>
-        <button class="text-gray-500"><i class="fas fa-bell"></i><span class="ml-1 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">1</span></button>
-        <button class="text-gray-500"><i class="fas fa-user"></i></button>
-    </div>
-</header>
+@include('layouts.navigation')
 
 <!-- Навигация по площадкам (фиксированные) -->
 <nav class="bg-white border-b">
