@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Личный кабинет - Аналитика маркетплейсов</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    @vite(['resources/css/app.css'])
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -15,6 +14,9 @@
             background-color: #ffffff;
             border-bottom: 1px solid #e5e7eb;
             padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         .logo {
             font-size: 1.5rem;
@@ -25,6 +27,7 @@
             padding: 0.5rem 1rem;
             border-bottom: 2px solid transparent;
             color: #4b5563;
+            display: inline-block;
         }
         .nav-tab.active {
             border-bottom-color: #d32f2f;
@@ -49,9 +52,9 @@
 </head>
 <body>
 <!-- Шапка -->
-<header class="header flex justify-between items-center">
+<header class="header">
     <div class="logo flex items-center">
-        <span>bu</span> <!-- Логотип -->
+        <span>bu</span>
     </div>
     <div class="flex items-center space-x-4">
         <input type="text" placeholder="Поиск по SKU" class="border rounded p-1">
@@ -64,11 +67,7 @@
 <!-- Навигация по маркетплейсам -->
 <nav class="bg-white border-b">
     <ul class="flex space-x-4 p-2">
-        <li><a href="#" class="nav-tab">Все</a></li>
-        <li><a href="#" class="nav-tab">WB</a></li>
-        <li><a href="#" class="nav-tab">Ozon</a></li>
-        <li><a href="#" class="nav-tab active">Я.Маркет <span class="bg-yellow-300 text-yellow-800 text-xs font-semibold px-2 py-1 rounded">1</span></a></li>
-        <li><a href="#" class="nav-tab">Магазин 1</a></li>
+        <li><a href="{{ route('dashboard', $store->slug) }}" class="nav-tab {{ $selectedStore && $selectedStore->slug === $store->slug ? 'active' : '' }}">{{ $store->name }}</a></li>
     </ul>
 </nav>
 
