@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\MarketplaceConnection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ConnectionController extends Controller
 {
@@ -22,7 +23,7 @@ class ConnectionController extends Controller
             'oauth_token' => 'required_if:marketplace_type,yandex-market|string|max:255',
         ]);
 
-        $slug = str_slug($validated['name']);
+        $slug = Str::slug($validated['name']);
 
         MarketplaceConnection::create([
             'user_id' => auth()->id(),
@@ -32,9 +33,9 @@ class ConnectionController extends Controller
             'api_key' => $validated['api_key'] ?? null,
             'client_id' => $validated['client_id'] ?? null,
             'oauth_token' => $validated['oauth_token'] ?? null,
-            'is_connected' => true, // Здесь можно добавить логику проверки подключения по API
+            'is_connected' => true, // Здесь можно добавить реальную проверку API, например, curl-запрос
         ]);
 
-        return redirect('/dashboard')->with('success', 'Магазин подключен!');
+        return redirect()->route('dashboard')->with('success', 'Магазин подключен!');
     }
 }
