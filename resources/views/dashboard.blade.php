@@ -67,7 +67,10 @@
 <!-- Навигация по маркетплейсам -->
 <nav class="bg-white border-b">
     <ul class="flex space-x-4 p-2">
-        <li><a href="{{ route('dashboard', $store->slug) }}" class="nav-tab {{ $selectedStore && $selectedStore->slug === $store->slug ? 'active' : '' }}">{{ $store->name }}</a></li>
+        <li><a href="#" class="nav-tab">Все</a></li>
+        @foreach ($connectedStores as $store)
+            <li><a href="#" class="nav-tab {{ request()->path() === 'dashboard/' . $store->slug ? 'active' : '' }}">{{ $store->name }}</a></li>
+        @endforeach
     </ul>
 </nav>
 
