@@ -15,7 +15,7 @@
         .chart-placeholder { height: 200px; background-color: #e5e7eb; display: flex; align-items: center; justify-content: center; color: #6b7280; }
         .store-select { border: 1px solid #e5e7eb; padding: 0.5rem; border-radius: 0.5rem; background-color: #f9fafb; }
     </style>
-    @vite('app.js')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
 @include('layouts.navigation')
