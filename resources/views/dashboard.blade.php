@@ -6,48 +6,14 @@
     <title>Личный кабинет - Аналитика маркетплейсов</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f7f7f7;
-        }
-        .header {
-            background-color: #ffffff;
-            border-bottom: 1px solid #e5e7eb;
-            padding: 0.5rem 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #d32f2f;
-        }
-        .nav-tab {
-            padding: 0.5rem 1rem;
-            border-bottom: 2px solid transparent;
-            color: #4b5563;
-            display: inline-block;
-        }
-        .nav-tab.active {
-            border-bottom-color: #d32f2f;
-            color: #d32f2f;
-        }
-        .card {
-            background-color: #ffffff;
-            border: 1px solid #e5e7eb;
-            border-radius: 0.5rem;
-            padding: 1rem;
-            margin-bottom: 1rem;
-        }
-        .chart-placeholder {
-            height: 200px;
-            background-color: #e5e7eb;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #6b7280;
-        }
+        body { font-family: 'Roboto', sans-serif; background-color: #f7f7f7; }
+        .header { background-color: #ffffff; border-bottom: 1px solid #e5e7eb; padding: 0.5rem 1rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.5rem; font-weight: bold; color: #d32f2f; }
+        .nav-tab { padding: 0.5rem 1rem; border-bottom: 2px solid transparent; color: #4b5563; display: inline-block; }
+        .nav-tab.active { border-bottom-color: #d32f2f; color: #d32f2f; }
+        .card { background-color: #ffffff; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1rem; margin-bottom: 1rem; }
+        .chart-placeholder { height: 200px; background-color: #e5e7eb; display: flex; align-items: center; justify-content: center; color: #6b7280; }
+        .store-select { border: 1px solid #e5e7eb; padding: 0.5rem; border-radius: 0.5rem; background-color: #f9fafb; }
     </style>
 </head>
 <body>
@@ -64,23 +30,35 @@
     </div>
 </header>
 
-<!-- Навигация по маркетплейсам -->
+<!-- Навигация по площадкам (фиксированные) -->
 <nav class="bg-white border-b">
     <ul class="flex space-x-4 p-2">
-        <li><a href="#" class="nav-tab">Все</a></li>
-        @if (!isset($connectedStores) || $connectedStores->isEmpty())
-            <li class="text-red-500">Нет подключенных магазинов. <a href="{{ route('connect') }}" class="text-blue-500">Подключить</a></li>
-        @else
-            @foreach ($connectedStores as $store)
-                <li><a href="#" class="nav-tab {{ request()->path() === 'dashboard/' . $store->slug ? 'active' : '' }}">{{ $store->name }}</a></li>
-            @endforeach
-        @endif
+        @foreach ($platforms as $slug => $name)
+            <li><a href="{{ route('dashboard', ['platform' => $slug]) }}" class="nav-tab {{ $selectedPlatform === $slug ? 'active' : '' }}">{{ $name }}</a></li>
+        @endforeach
     </ul>
 </nav>
 
-<!-- Основной контент -->
+<!-- Плашка выбора магазинов (если площадка выбрана и есть магазины) -->
+<section class="container mx-auto p-4">
+    @if ($selectedPlatform !== 'all' && $platformStores->isNotEmpty())
+        <div class="store-select mb-4">
+            <label for="store-select">Выберите магазин:</label>
+            <select id="store-select" onchange="window.location.href = '{{ route('dashboard', ['platform' => $selectedPlatform]) }}&store=' + this.value;">
+                <option value="all" {{ $selectedStoreId === 'all' ? 'selected' : '' }}>Все</option>
+                @foreach ($platformStores as $store)
+                    <option value="{{ $store->id }}" {{ $selectedStoreId == $store->id ? 'selected' : '' }}>{{ $store->name }}</option>
+                @endforeach
+            </select>
+        </div>
+    @elseif ($selectedPlatform !== 'all' && $platformStores->isEmpty())
+        <p class="text-red-500">Нет подключенных магазинов для этой площадки. <a href="{{ route('connect') }}" class="text-blue-500">Подключить</a></p>
+    @endif
+</section>
+
+<!-- Основной контент (статистика — заглушка) -->
 <main class="container mx-auto p-4 grid grid-cols-1 md:grid-cols-3 gap-4">
-    @if (!isset($connectedStores) || $connectedStores->isEmpty())
+    @if ($platformStores->isEmpty())
         <div class="card col-span-3 text-center">
             <h2 class="text-lg font-semibold mb-2">Нет подключенных магазинов</h2>
             <p>Перейдите в раздел подключения, чтобы добавить маркетплейсы.</p>
@@ -89,7 +67,7 @@
     @else
         <!-- Динамика товаров -->
         <div class="card col-span-2">
-            <h2 class="text-lg font-semibold mb-2">Динамика товаров</h2>
+            <h2 class="text-lg font-semibold mb-2">Динамика товаров (Заглушка: {{ $statistics['message'] ?? 'Общая статистика' }})</h2>
             <div class="chart-placeholder">График (заглушка)</div>
             <div class="text-sm text-gray-500 mt-2">Смотреть</div>
         </div>
@@ -106,6 +84,10 @@
             </div>
             <button class="mt-2 bg-blue-500 text-white px-4 py-1 rounded">Перейти</button>
         </div>
+
+        <!-- Другие карточки (заглушки) -->
+        <!-- ... (остальные карточки как в предыдущем коде) -->
+
 
         <!-- Поставки WB -->
         <div class="card">
