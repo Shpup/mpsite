@@ -48,7 +48,7 @@
                                 <li class="border p-4 rounded flex justify-between items-center">
                                     <div class="text-lg">{{ $store->name }}</div>
                                     <div class="space-x-2">
-                                        <button @click="editModal = { id: '{{ $store->id }}', name: '{{ $store->name }}', marketplace_type: '{{ $store->marketplace_type }}', api_key: '{{ $store->api_key }}', client_id: '{{ $store->client_id }}', oauth_token: '{{ $store->oauth_token }}' }; toggleFields(editModal.marketplace_type, 'edit')" class="bg-yellow-500 text-white px-2 py-1 rounded">Изменить</button>
+                                        <button  class="bg-blue-500 text-white px-2 py-1 rounded" @click="editModal = { id: '{{ $store->id }}', name: '{{ $store->name }}', marketplace_type: '{{ $store->marketplace_type }}', api_key: '{{ $store->api_key }}', client_id: '{{ $store->client_id }}', oauth_token: '{{ $store->oauth_token }}' }; toggleFields(editModal.marketplace_type, 'edit')">Изменить</button>
                                         <form method="POST" action="{{ route('profile.delete_store', $store->id) }}" class="inline" onclick="return confirm('Удалить магазин?');">
                                             @csrf
                                             @method('DELETE')
