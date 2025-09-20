@@ -36,6 +36,11 @@ class ProfileController extends Controller
     public function connectStore(Request $request)
     {
         Log::info('connectStore called with data:', $request->all());
+        Log::info('Authenticated user ID: ' . (auth()->id() ?? 'Not authenticated'));
+
+        if (!auth()->check()) {
+            return redirect()->route('login')->with('error', 'Пожалуйста, войдите в систему.');
+        }
 
         $validated = $request->validate([
             'marketplace_type' => 'required|in:wb,ozon,yandex-market',
@@ -48,7 +53,7 @@ class ProfileController extends Controller
         Log::info('Validated data:', $validated);
 
         $store = MarketplaceConnection::create([
-            'user_id' => auth()->id(),
+            'user_id' => auth()->id(), // Убедимся, что это работает
             'marketplace_type' => $validated['marketplace_type'],
             'name' => $validated['name'],
             'slug' => Str::slug($validated['name']),
