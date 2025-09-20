@@ -11,8 +11,8 @@
         .logo { font-size: 1.5rem; font-weight: bold; color: #d32f2f; }
         .nav-tab { padding: 0.5rem 1rem; border-bottom: 2px solid transparent; color: #4b5563; display: inline-block; }
         .nav-tab.active { border-bottom-color: #d32f2f; color: #d32f2f; }
-        .card { background-color: #ffffff; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1rem; margin-bottom: 1rem; }
-        .chart-placeholder { height: 200px; background-color: #e5e7eb; display: flex; align-items: center; justify-content: center; color: #6b7280; }
+        .card { background-color: #ffffff; border: 0.5px solid #e5e7eb; border-radius: 0.5rem; padding: 0.5rem; margin-bottom: 0.5rem; }
+        .chart-placeholder { height: 200px; background-color: #ffffff; display: flex; align-items: center; justify-content: center; color: #ffffff; }
         .store-select { border: 1px solid #e5e7eb; padding: 0.5rem; border-radius: 0.5rem; background-color: #f9fafb; margin-left: 1rem; }
     </style>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
