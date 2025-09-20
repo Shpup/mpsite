@@ -84,19 +84,19 @@
                             </div>
                             <div id="add-wb-fields" class="mb-4" x-show="addType === 'wb'">
                                 <label for="api_key_add" class="block">API ключ:</label>
-                                <input type="text" name="api_key" id="api_key_add" class="border p-2 w-full" required>
+                                <input type="text" name="api_key" id="api_key_add" class="border p-2 w-full" x-bind:required="addType === 'wb'">
                             </div>
                             <div id="add-ozon-fields" class="mb-4" x-show="addType === 'ozon'">
                                 <label for="client_id_add" class="block">Client ID:</label>
-                                <input type="text" name="client_id" id="client_id_add" class="border p-2 w-full" required>
+                                <input type="text" name="client_id" id="client_id_add" class="border p-2 w-full" x-bind:required="addType === 'ozon'">
                                 <label for="api_key_add" class="block">API ключ:</label>
-                                <input type="text" name="api_key" id="api_key_add" class="border p-2 w-full" required>
+                                <input type="text" name="api_key" id="api_key_add" class="border p-2 w-full" x-bind:required="addType === 'ozon'">
                             </div>
                             <div id="add-yandex-fields" class="mb-4" x-show="addType === 'yandex-market'">
                                 <label for="client_id_add" class="block">Client ID:</label>
-                                <input type="text" name="client_id" id="client_id_add" class="border p-2 w-full" required>
+                                <input type="text" name="client_id" id="client_id_add" class="border p-2 w-full" x-bind:required="addType === 'yandex-market'">
                                 <label for="oauth_token_add" class="block">OAuth токен:</label>
-                                <input type="text" name="oauth_token" id="oauth_token_add" class="border p-2 w-full" required>
+                                <input type="text" name="oauth_token" id="oauth_token_add" class="border p-2 w-full" x-bind:required="addType === 'yandex-market'">
                             </div>
                             <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Подключить</button>
                             <button type="button" @click="addModal = false" class="ml-2 bg-gray-500 text-white px-4 py-2 rounded">Закрыть</button>
@@ -112,24 +112,24 @@
                             @csrf
                             @method('PUT')
                             <div class="mb-4">
-                                <label for="name" class="block">Название магазина:</label>
-                                <input type="text" name="name" x-bind:value="editModal.name" class="border p-2 w-full">
+                                <label for="name_edit" class="block">Название магазина:</label>
+                                <input type="text" name="name" x-bind:value="editModal.name" id="name_edit" class="border p-2 w-full" required>
                             </div>
                             <div id="edit-wb-fields" class="mb-4" x-show="editModal.marketplace_type === 'wb'">
                                 <label for="api_key_edit" class="block">API ключ:</label>
-                                <input type="text" name="api_key" x-bind:value="editModal.api_key" id="api_key_edit" class="border p-2 w-full">
+                                <input type="text" name="api_key" x-bind:value="editModal.api_key" id="api_key_edit" class="border p-2 w-full" x-bind:required="editModal.marketplace_type === 'wb'">
                             </div>
                             <div id="edit-ozon-fields" class="mb-4" x-show="editModal.marketplace_type === 'ozon'">
                                 <label for="client_id_edit" class="block">Client ID:</label>
-                                <input type="text" name="client_id" x-bind:value="editModal.client_id" id="client_id_edit" class="border p-2 w-full">
+                                <input type="text" name="client_id" x-bind:value="editModal.client_id" id="client_id_edit" class="border p-2 w-full" x-bind:required="editModal.marketplace_type === 'ozon'">
                                 <label for="api_key_edit" class="block">API ключ:</label>
-                                <input type="text" name="api_key" x-bind:value="editModal.api_key" id="api_key_edit" class="border p-2 w-full">
+                                <input type="text" name="api_key" x-bind:value="editModal.api_key" id="api_key_edit" class="border p-2 w-full" x-bind:required="editModal.marketplace_type === 'ozon'">
                             </div>
                             <div id="edit-yandex-fields" class="mb-4" x-show="editModal.marketplace_type === 'yandex-market'">
                                 <label for="client_id_edit" class="block">Client ID:</label>
-                                <input type="text" name="client_id" x-bind:value="editModal.client_id" id="client_id_edit" class="border p-2 w-full">
+                                <input type="text" name="client_id" x-bind:value="editModal.client_id" id="client_id_edit" class="border p-2 w-full" x-bind:required="editModal.marketplace_type === 'yandex-market'">
                                 <label for="oauth_token_edit" class="block">OAuth токен:</label>
-                                <input type="text" name="oauth_token" x-bind:value="editModal.oauth_token" id="oauth_token_edit" class="border p-2 w-full">
+                                <input type="text" name="oauth_token" x-bind:value="editModal.oauth_token" id="oauth_token_edit" class="border p-2 w-full" x-bind:required="editModal.marketplace_type === 'yandex-market'">
                             </div>
                             <button type="submit" class="bg-yellow-500 text-white px-4 py-2 rounded">Сохранить</button>
                             <button type="button" @click="editModal = {}" class="ml-2 bg-gray-500 text-white px-4 py-2 rounded">Закрыть</button>
