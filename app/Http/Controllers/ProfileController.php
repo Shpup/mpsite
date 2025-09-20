@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\MarketplaceConnection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class ProfileController extends Controller
@@ -34,6 +35,8 @@ class ProfileController extends Controller
 
     public function connectStore(Request $request)
     {
+        Log::info('connectStore called with data:', $request->all());
+
         $validated = $request->validate([
             'marketplace_type' => 'required|in:wb,ozon,yandex-market',
             'name' => 'required|string|max:255',
@@ -42,7 +45,9 @@ class ProfileController extends Controller
             'oauth_token' => 'required_if:marketplace_type,yandex-market|string|max:255',
         ]);
 
-        MarketplaceConnection::create([
+        Log::info('Validated data:', $validated);
+
+        $store = MarketplaceConnection::create([
             'user_id' => auth()->id(),
             'marketplace_type' => $validated['marketplace_type'],
             'name' => $validated['name'],
@@ -52,6 +57,8 @@ class ProfileController extends Controller
             'oauth_token' => $validated['oauth_token'] ?? null,
             'is_connected' => true,
         ]);
+
+        Log::info('Created store:', $store->toArray());
 
         return redirect()->route('profile')->with('success', 'Магазин подключен');
     }
