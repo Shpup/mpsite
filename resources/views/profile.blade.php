@@ -141,7 +141,7 @@
             </div>
         </div>
     </div>
-    </div>
+@endsection
 
     <script>
         function toggleFields(modal) {
