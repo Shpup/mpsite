@@ -61,7 +61,7 @@
     </div>
 
     <!-- Боковое меню (выдвигается слева, растягивается до низа) -->
-    <aside x-show="open" class="fixed inset-y-0 left-0 z-40 w-64 bg-white dark:bg-gray-800 shadow-lg transform transition-transform duration-300 ease-in-out" :class="{ 'translate-x-0': open, '-translate-x-full': !open }">
+    <aside x-show="open" class="fixed inset-y-0 h-full min-h-screen left-0 z-40 w-64 bg-white dark:bg-gray-800 shadow-lg transform transition-transform duration-300 ease-in-out" :class="{ 'translate-x-0': open, '-translate-x-full': !open }">
         <div class="h-full min-h-screen flex flex-col">
             <div class="flex-shrink-0 p-4 border-b">
                 <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Меню</h2>
