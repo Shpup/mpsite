@@ -71,32 +71,32 @@
                         <form method="POST" action="{{ route('profile.connect_store') }}">
                             @csrf
                             <div class="mb-4">
-                                <label for="marketplace_type" class="block">Тип маркетплейса:</label>
-                                <select name="marketplace_type" id="add_marketplace_type" class="border p-2 w-full" x-model="addType" @change="toggleFields($event.target.value, 'add')">
+                                <label for="marketplace_type_add" class="block">Тип маркетплейса:</label>
+                                <select name="marketplace_type" id="marketplace_type_add" class="border p-2 w-full" x-model="addType" @change="toggleFields($event.target.value, 'add')">
                                     <option value="wb">Wildberries</option>
                                     <option value="ozon">Ozon</option>
                                     <option value="yandex-market">Яндекс.Маркет</option>
                                 </select>
                             </div>
                             <div class="mb-4">
-                                <label for="name" class="block">Название магазина:</label>
-                                <input type="text" name="name" class="border p-2 w-full" required>
+                                <label for="name_add" class="block">Название магазина:</label>
+                                <input type="text" name="name" id="name_add" class="border p-2 w-full" required>
                             </div>
                             <div id="add-wb-fields" class="mb-4" x-show="addType === 'wb'">
                                 <label for="api_key_add" class="block">API ключ:</label>
-                                <input type="text" name="api_key" id="api_key_add" class="border p-2 w-full">
+                                <input type="text" name="api_key" id="api_key_add" class="border p-2 w-full" required>
                             </div>
                             <div id="add-ozon-fields" class="mb-4" x-show="addType === 'ozon'">
                                 <label for="client_id_add" class="block">Client ID:</label>
-                                <input type="text" name="client_id" id="client_id_add" class="border p-2 w-full">
+                                <input type="text" name="client_id" id="client_id_add" class="border p-2 w-full" required>
                                 <label for="api_key_add" class="block">API ключ:</label>
-                                <input type="text" name="api_key" id="api_key_add" class="border p-2 w-full">
+                                <input type="text" name="api_key" id="api_key_add" class="border p-2 w-full" required>
                             </div>
                             <div id="add-yandex-fields" class="mb-4" x-show="addType === 'yandex-market'">
                                 <label for="client_id_add" class="block">Client ID:</label>
-                                <input type="text" name="client_id" id="client_id_add" class="border p-2 w-full">
+                                <input type="text" name="client_id" id="client_id_add" class="border p-2 w-full" required>
                                 <label for="oauth_token_add" class="block">OAuth токен:</label>
-                                <input type="text" name="oauth_token" id="oauth_token_add" class="border p-2 w-full">
+                                <input type="text" name="oauth_token" id="oauth_token_add" class="border p-2 w-full" required>
                             </div>
                             <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Подключить</button>
                             <button type="button" @click="addModal = false" class="ml-2 bg-gray-500 text-white px-4 py-2 rounded">Закрыть</button>
