@@ -1,6 +1,7 @@
 @include('layouts.navigation')
 @vite(['resources/css/app.css', 'resources/js/app.js'])
-<div class="py-12" x-data="{ passwordModal: false, addModal: false, addType: 'wb', editModal: {}, toggleFields(type, modal) { let fields = ['wb-fields', 'ozon-fields', 'yandex-fields']; fields.forEach(f => document.getElementById(modal + '-' + f).style.display = 'none'); if (type === 'wb') document.getElementById(modal + '-' + f).style.display = 'block'; else if (type === 'ozon') document.getElementById(modal + '-' + f).style.display = 'block'; else if (type === 'yandex-market') document.getElementById(modal + '-' + f).style.display = 'block'; } }">
+
+<div class="content py-12" x-data="{ passwordModal: false, addModal: false, addType: 'wb', editModal: {}, toggleFields(type, modal) { let fields = ['wb-fields', 'ozon-fields', 'yandex-fields']; fields.forEach(f => document.getElementById(modal + '-' + f).style.display = 'none'); if (type === 'wb') document.getElementById(modal + '-' + f).style.display = 'block'; else if (type === 'ozon') document.getElementById(modal + '-' + f).style.display = 'block'; else if (type === 'yandex-market') document.getElementById(modal + '-' + f).style.display = 'block'; } }">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 text-gray-900">
@@ -48,7 +49,7 @@
                                 <li class="border p-4 rounded flex justify-between items-center">
                                     <div class="text-lg">{{ $store->name }}</div>
                                     <div class="space-x-2">
-                                        <button  class="bg-blue-500 text-white px-2 py-1 rounded" @click="editModal = { id: '{{ $store->id }}', name: '{{ $store->name }}', marketplace_type: '{{ $store->marketplace_type }}', api_key: '{{ $store->api_key }}', client_id: '{{ $store->client_id }}', oauth_token: '{{ $store->oauth_token }}' }; toggleFields(editModal.marketplace_type, 'edit')">Изменить</button>
+                                        <button class="bg-blue-500 text-white px-2 py-1 rounded" @click="editModal = { id: '{{ $store->id }}', name: '{{ $store->name }}', marketplace_type: '{{ $store->marketplace_type }}', api_key: '{{ $store->api_key }}', client_id: '{{ $store->client_id }}', oauth_token: '{{ $store->oauth_token }}' }; toggleFields(editModal.marketplace_type, 'edit')">Изменить</button>
                                         <form method="POST" action="{{ route('profile.delete_store', $store->id) }}" class="inline" onclick="return confirm('Удалить магазин?');">
                                             @csrf
                                             @method('DELETE')
@@ -65,14 +66,15 @@
                 <button @click="addModal = true; toggleFields(addType, 'add')" class="bg-green-500 text-white px-4 py-2 rounded mt-6">Подключить новый магазин</button>
 
                 <!-- Модальное окно для добавления магазина -->
-                <div x-show="addModal" class="fixed inset-0 z-50 overflow-auto bg-smoke-light flex">
+                <!-- Модальное окно для добавления магазина -->
+                <div x-show="addModal" class="fixed inset-0 z-50 overflow-auto bg-smoke-light flex" x-data="modalFields">
                     <div class="relative p-8 bg-white w-full max-w-md m-auto flex-col flex rounded-lg shadow-lg">
                         <h3 class="text-lg font-semibold mb-4">Подключить новый магазин</h3>
                         <form method="POST" action="{{ route('profile.connect_store') }}">
                             @csrf
                             <div class="mb-4">
                                 <label for="marketplace_type_add" class="block">Тип маркетплейса:</label>
-                                <select name="marketplace_type" id="marketplace_type_add" class="border p-2 w-full" x-model="addType" @change="toggleFields($event.target.value, 'add')">
+                                <select name="marketplace_type" id="marketplace_type_add" class="border p-2 w-full" x-model="addType" @change="$dispatch('toggle-fields', { type: $event.target.value, modal: 'add' })">
                                     <option value="wb">Wildberries</option>
                                     <option value="ozon">Ozon</option>
                                     <option value="yandex-market">Яндекс.Маркет</option>
@@ -105,7 +107,7 @@
                 </div>
 
                 <!-- Модальное окно для изменения магазина -->
-                <div x-show="editModal.id" class="fixed inset-0 z-50 overflow-auto bg-smoke-light flex">
+                <div x-show="editModal.id" class="fixed inset-0 z-50 overflow-auto bg-smoke-light flex" x-data="modalFields">
                     <div class="relative p-8 bg-white w-full max-w-md m-auto flex-col flex rounded-lg shadow-lg">
                         <h3 class="text-lg font-semibold mb-4">Изменить магазин</h3>
                         <form method="POST" action="{{ route('profile.update_store', ['id' => 'editModal.id']) }}">
@@ -139,13 +141,18 @@
             </div>
         </div>
     </div>
-
 </div>
+
 <script>
-    function toggleFields(modal) {
-        let type = document.getElementById(modal + '_marketplace_type').value;
-        document.getElementById(modal + '-wb-fields').style.display = (type === 'wb') ? 'block' : 'none';
-        document.getElementById(modal + '-ozon-fields').style.display = (type === 'ozon') ? 'block' : 'none';
-        document.getElementById(modal + '-yandex-fields').style.display = (type === 'yandex-market') ? 'block' : 'none';
-    }
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('modalFields', () => ({
+            toggleFields(type, modal) {
+                const fields = ['wb-fields', 'ozon-fields', 'yandex-fields'];
+                fields.forEach(f => {
+                    const element = document.getElementById(`${modal}-${f}`);
+                    if (element) element.style.display = (type === f.replace('-fields', '')) ? 'block' : 'none';
+                });
+            }
+        }));
+    });
 </script>

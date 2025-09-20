@@ -61,7 +61,7 @@
     </div>
 
     <!-- Боковое меню (выдвигается слева, растягивается до низа) -->
-    <aside x-show="open" class="fixed inset-y-0 h-full min-h-screen left-0 z-40 w-64 bg-white dark:bg-gray-800 shadow-lg transform transition-transform duration-300 ease-in-out" >
+    <aside x-show="open" class="fixed inset-y-0 h-full min-h-screen left-0 z-60 w-64 bg-white dark:bg-gray-800 shadow-lg transform transition-transform duration-300 ease-in-out" :class="{ 'translate-x-0': open, '-translate-x-full': !open }">
         <div class="h-full min-h-screen flex flex-col">
             <div class="flex-shrink-0 p-4 border-b">
                 <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Меню</h2>
@@ -77,7 +77,7 @@
     </aside>
 
     <!-- Оверлей для блокировки основного контента -->
-    <div x-show="open" x-transition:enter="transition-opacity duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity duration-300" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 bg-black bg-opacity-50 z-30" @click="open = false"></div>
+    <div x-show="open" x-transition:enter="transition-opacity duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity duration-300" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 bg-black bg-opacity-50 z-50" @click="open = false"></div>
 </nav>
 
 <style>
