@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+@include('layouts.navigation')
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,7 +20,7 @@
 </head>
 <body>
 <!-- Шапка (навигация теперь в layouts/navigation.blade.php) -->
-@include('layouts.navigation')
+
 
 <!-- Навигация по площадкам (фиксированные) -->
 <div class="py-12">
