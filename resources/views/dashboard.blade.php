@@ -13,38 +13,37 @@
         .nav-tab.active { border-bottom-color: #d32f2f; color: #d32f2f; }
         .card { background-color: #ffffff; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1rem; margin-bottom: 1rem; }
         .chart-placeholder { height: 200px; background-color: #e5e7eb; display: flex; align-items: center; justify-content: center; color: #6b7280; }
-        .store-select { border: 1px solid #e5e7eb; padding: 0.5rem; border-radius: 0.5rem; background-color: #f9fafb; }
+        .store-select { border: 1px solid #e5e7eb; padding: 0.5rem; border-radius: 0.5rem; background-color: #f9fafb; margin-left: 1rem; }
     </style>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
+<!-- Шапка (навигация теперь в layouts/navigation.blade.php) -->
 @include('layouts.navigation')
 
 <!-- Навигация по площадкам (фиксированные) -->
 <nav class="bg-white border-b">
-    <ul class="flex space-x-4 p-2">
+    <ul class="flex space-x-4 p-2 items-center">
         @foreach ($platforms as $slug => $name)
             <li><a href="{{ route('dashboard', ['platform' => $slug]) }}" class="nav-tab {{ $selectedPlatform === $slug ? 'active' : '' }}">{{ $name }}</a></li>
         @endforeach
+
+        <!-- Плашка выбора магазинов (рядом с табами) -->
+        @if ($selectedPlatform !== 'all' && $platformStores->isNotEmpty())
+            <li class="store-select">
+                <label for="store-select">Выберите магазин:</label>
+                <select id="store-select" onchange="window.location.href = '{{ route('dashboard', ['platform' => $selectedPlatform]) }}&store=' + this.value;">
+                    <option value="all" {{ $selectedStoreId === 'all' ? 'selected' : '' }}>Все</option>
+                    @foreach ($platformStores as $store)
+                        <option value="{{ $store->id }}" {{ $selectedStoreId == $store->id ? 'selected' : '' }}>{{ $store->name }}</option>
+                    @endforeach
+                </select>
+            </li>
+        @elseif ($selectedPlatform !== 'all' && $platformStores->isEmpty())
+            <li class="text-red-500">Нет подключенных магазинов для этой площадки. <a href="{{ route('connect') }}" class="text-blue-500">Подключить</a></li>
+        @endif
     </ul>
 </nav>
-
-<!-- Плашка выбора магазинов (если площадка выбрана и есть магазины) -->
-<section class="container mx-auto p-4">
-    @if ($selectedPlatform !== 'all' && $platformStores->isNotEmpty())
-        <div class="store-select mb-4">
-            <label for="store-select">Выберите магазин:</label>
-            <select id="store-select" onchange="window.location.href = '{{ route('dashboard', ['platform' => $selectedPlatform]) }}&store=' + this.value;">
-                <option value="all" {{ $selectedStoreId === 'all' ? 'selected' : '' }}>Все</option>
-                @foreach ($platformStores as $store)
-                    <option value="{{ $store->id }}" {{ $selectedStoreId == $store->id ? 'selected' : '' }}>{{ $store->name }}</option>
-                @endforeach
-            </select>
-        </div>
-    @elseif ($selectedPlatform !== 'all' && $platformStores->isEmpty())
-        <p class="text-red-500">Нет подключенных магазинов для этой площадки. <a href="{{ route('connect') }}" class="text-blue-500">Подключить</a></p>
-    @endif
-</section>
 
 <!-- Основной контент (статистика — заглушка) -->
 <main class="container mx-auto p-4 grid grid-cols-1 md:grid-cols-3 gap-4">

@@ -13,9 +13,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/connect', [ConnectionController::class, 'index'])->name('connect');
     Route::post('/connect', [ConnectionController::class, 'store']);
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+    Route::post('/profile/update-password', [ProfileController::class, 'updatePassword'])->name('profile.update_password');});
 
 require __DIR__.'/auth.php';

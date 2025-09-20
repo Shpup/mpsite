@@ -3,20 +3,8 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
-                <!-- Logo -->
-                <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <span class="text-xl font-bold text-red-500">bu</span> <!-- Логотип из скриншота -->
-                    </a>
-                </div>
-
                 <!-- Hamburger (три полосы для бокового меню) -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <!-- Заглушки для основных ссылок, если нужно -->
-                </div>
-
-                <!-- Mobile hamburger -->
-                <div @click="open = !open" class="ms-4 flex items-center md:hidden">
+                <div @click="open = !open" class="flex items-center">
                     <button class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
                         <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                             <path :class="{'hidden': open, 'inline-flex': !open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -24,10 +12,17 @@
                         </svg>
                     </button>
                 </div>
+
+                <!-- Logo -->
+                <div class="shrink-0 flex items-center ml-4">
+                    <a href="{{ route('dashboard') }}">
+                        <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-8 w-auto"> <!-- Размер логотипа: 100x50 px -->
+                    </a>
+                </div>
             </div>
 
             <!-- Right side: Search, Notifications, Profile -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
+            <div class="flex items-center space-x-4">
                 <!-- Поиск: скрыто, активируется по клику на лупу -->
                 <div x-data="{ searchActive: false }" class="relative">
                     <button @click="searchActive = !searchActive" class="p-2 text-gray-400 hover:text-gray-500 focus:outline-none">
@@ -44,7 +39,7 @@
                 </div>
 
                 <!-- Уведомления -->
-                <div class="relative ml-4">
+                <div class="relative">
                     <button class="p-2 text-gray-400 hover:text-gray-500 focus:outline-none relative">
                         <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
@@ -53,24 +48,24 @@
                     </button>
                 </div>
 
-                <!-- Профиль -->
-                <div class="ml-3 relative">
-                    <div class="p-2 text-gray-400 hover:text-gray-500 focus:outline-none">
+                <!-- Профиль (ЛК) -->
+                <div class="relative">
+                    <a href="{{ route('profile') }}" class="p-2 text-gray-400 hover:text-gray-500 focus:outline-none">
                         <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Responsive Navigation Menu (боковое меню с заглушками) -->
-    <div :class="{'block': open, 'hidden': !open}" class="hidden md:hidden" x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95">
+    <div :class="{'block': open, 'hidden': !open}" class="md:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <!-- Заглушки пунктов меню -->
             <a href="{{ route('dashboard') }}" class="block px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50">Dashboard</a>
-            <a href="#" class="block px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50">Profile</a>
+            <a href="{{ route('profile') }}" class="block px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50">Profile</a>
             <a href="#" class="block px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50">Settings</a>
             <a href="{{ route('logout') }}" class="block px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">@csrf</form>
