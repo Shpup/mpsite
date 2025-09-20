@@ -1,6 +1,6 @@
 @include('layouts.navigation')
 @vite(['resources/css/app.css', 'resources/js/app.js'])
-<div class="py-12" x-data="{ passwordModal: false, addModal: false, addType: 'wb', editModal: {}, toggleFields(type, modal) { let fields = ['wb-fields', 'ozon-fields', 'yandex-fields']; fields.forEach(f => document.getElementById(modal + '-' + f).style.display = 'none'); if (type === 'wb') document.getElementById(modal + '-wb-fields').style.display = 'block'; else if (type === 'ozon') document.getElementById(modal + '-ozon-fields').style.display = 'block'; else if (type === 'yandex-market') document.getElementById(modal + '-yandex-fields').style.display = 'block'; } }">
+<div class="py-12" x-data="{ passwordModal: false, addModal: false, addType: 'wb', editModal: {}, toggleFields(type, modal) { let fields = ['wb-fields', 'ozon-fields', 'yandex-fields']; fields.forEach(f => document.getElementById(modal + '-' + f).style.display = 'none'); if (type === 'wb') document.getElementById(modal + '-' + f).style.display = 'block'; else if (type === 'ozon') document.getElementById(modal + '-' + f).style.display = 'block'; else if (type === 'yandex-market') document.getElementById(modal + '-' + f).style.display = 'block'; } }">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 text-gray-900">
@@ -45,9 +45,9 @@
                         <h3 class="text-lg font-medium mt-4">{{ strtoupper($type) }}</h3>
                         <ul class="space-y-4">
                             @foreach ($stores as $store)
-                                <li class="border p-4 rounded">
-                                    <div>{{ $store->name }}</div>
-                                    <div class="mt-2 space-x-2">
+                                <li class="border p-4 rounded flex justify-between items-center">
+                                    <div class="text-lg">{{ $store->name }}</div>
+                                    <div class="space-x-2">
                                         <button @click="editModal = { id: '{{ $store->id }}', name: '{{ $store->name }}', marketplace_type: '{{ $store->marketplace_type }}', api_key: '{{ $store->api_key }}', client_id: '{{ $store->client_id }}', oauth_token: '{{ $store->oauth_token }}' }; toggleFields(editModal.marketplace_type, 'edit')" class="bg-yellow-500 text-white px-2 py-1 rounded">Изменить</button>
                                         <form method="POST" action="{{ route('profile.delete_store', $store->id) }}" class="inline" onclick="return confirm('Удалить магазин?');">
                                             @csrf
