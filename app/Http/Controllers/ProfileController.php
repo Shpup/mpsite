@@ -50,9 +50,9 @@ class ProfileController extends Controller
             $validated = $request->validate([
                 'marketplace_type' => 'required|in:wb,ozon,yandex-market',
                 'name' => 'required|string|max:255',
-                'api_key' => 'required_if:marketplace_type,wb,ozon|string|max:255',
-                'client_id' => 'required_if:marketplace_type,ozon,yandex-market|string|max:255',
-                'oauth_token' => 'required_if:marketplace_type,yandex-market|string|max:255',
+                'api_key' => 'nullable|string|max:255', // Убрали required_if, полагаемся на фронтенд
+                'client_id' => 'nullable|string|max:255',
+                'oauth_token' => 'nullable|string|max:255',
             ]);
 
             Log::info('Validated data:', $validated);
