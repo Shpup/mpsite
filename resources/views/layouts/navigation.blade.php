@@ -61,7 +61,7 @@
     </div>
 
     <!-- Responsive Navigation Menu (боковое меню с заглушками) -->
-    <div x-show="open" class="md:hidden">
+    <div x-show="open">
         <div class="pt-2 pb-3 space-y-1">
             <a href="{{ route('dashboard') }}" class="block px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50">Dashboard</a>
             <a href="{{ route('profile') }}" class="block px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50">Profile</a>
