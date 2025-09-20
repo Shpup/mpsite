@@ -1,11 +1,11 @@
-<nav x-data="{ open: false, searchOpen: false }" x-init="Alpine.store('sidebar', { open: false })" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
+<nav x-data="{ open: false, searchOpen: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Hamburger (три полосы для бокового меню) -->
                 <div class="flex items-center">
-                    <button @click="open = !open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
+                    <button @click="open = !open; if (open) alert('Меню открыто!')" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
                         <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                             <path x-show="!open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                             <path x-show="open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -60,14 +60,33 @@
         </div>
     </div>
 
-    <!-- Responsive Navigation Menu (боковое меню с заглушками) -->
-    <div x-show="open">
+    <!-- Responsive Navigation Menu (боковое меню слева) -->
+    <div x-show="open" class="fixed inset-y-0 left-0 z-40 w-64 bg-white dark:bg-gray-800 shadow-lg transform transition-transform duration-300 ease-in-out" :class="{ 'translate-x-0': open, '-translate-x-full': !open }">
         <div class="pt-2 pb-3 space-y-1">
-            <a href="{{ route('dashboard') }}" class="block px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50">Dashboard</a>
-            <a href="{{ route('profile') }}" class="block px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50">Profile</a>
-            <a href="#" class="block px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50">Settings</a>
-            <a href="{{ route('logout') }}" class="block px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+            <a href="{{ route('dashboard') }}" class="block px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-gray-700">Dashboard</a>
+            <a href="{{ route('profile') }}" class="block px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-gray-700">Profile</a>
+            <a href="#" class="block px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-gray-700">Settings</a>
+            <a href="{{ route('logout') }}" class="block px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-gray-700" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">@csrf</form>
         </div>
     </div>
 </nav>
+
+<style>
+    .bg-smoke-light {
+        background-color: rgba(0, 0, 0, 0.6);
+    }
+    /* Убедимся, что основное содержимое не перекрывается меню */
+    .content {
+        margin-left: 0;
+        transition: margin-left 0.3s ease-in-out;
+    }
+    @media (min-width: 768px) {
+        .content {
+            margin-left: 0;
+        }
+    }
+    [x-cloak] {
+        display: none;
+    }
+</style>
