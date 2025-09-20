@@ -1,4 +1,4 @@
-<nav x-data="{ open: false, searchOpen: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
+<nav x-data="{ open: false, searchOpen: false }" x-init="Alpine.store('sidebar', { open: false })" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -23,7 +23,7 @@
 
             <!-- Right side: Search, Notifications, Profile -->
             <div class="flex items-center space-x-4">
-                <!-- Поиск: скрыто, активируется по клику на лупу -->
+                <!-- Поиск -->
                 <div x-data="{ searchActive: false }" class="relative">
                     <button @click="searchActive = !searchActive" class="p-2 text-gray-400 hover:text-gray-500 focus:outline-none">
                         <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -63,7 +63,6 @@
     <!-- Responsive Navigation Menu (боковое меню с заглушками) -->
     <div :class="{'block': open, 'hidden': !open}" class="md:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <!-- Заглушки пунктов меню -->
             <a href="{{ route('dashboard') }}" class="block px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50">Dashboard</a>
             <a href="{{ route('profile') }}" class="block px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50">Profile</a>
             <a href="#" class="block px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50">Settings</a>

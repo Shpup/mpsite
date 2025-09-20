@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\MarketplaceConnection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class ProfileController extends Controller
 {
@@ -29,5 +30,59 @@ class ProfileController extends Controller
         }
 
         return back()->withErrors(['current_password' => 'Текущий пароль неверный']);
+    }
+
+    public function connectStore(Request $request)
+    {
+        $validated = $request->validate([
+            'marketplace_type' => 'required|in:wb,ozon,yandex-market',
+            'name' => 'required|string|max:255',
+            'api_key' => 'required_if:marketplace_type,wb,ozon|string|max:255',
+            'client_id' => 'required_if:marketplace_type,ozon,yandex-market|string|max:255',
+            'oauth_token' => 'required_if:marketplace_type,yandex-market|string|max:255',
+        ]);
+
+        MarketplaceConnection::create([
+            'user_id' => auth()->id(),
+            'marketplace_type' => $validated['marketplace_type'],
+            'name' => $validated['name'],
+            'slug' => Str::slug($validated['name']),
+            'api_key' => $validated['api_key'] ?? null,
+            'client_id' => $validated['client_id'] ?? null,
+            'oauth_token' => $validated['oauth_token'] ?? null,
+            'is_connected' => true,
+        ]);
+
+        return redirect()->route('profile')->with('success', 'Магазин подключен');
+    }
+
+    public function updateStore(Request $request, $id)
+    {
+        $store = MarketplaceConnection::findOrFail($id);
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'api_key' => 'required_if:marketplace_type,wb,ozon|string|max:255',
+            'client_id' => 'required_if:marketplace_type,ozon,yandex-market|string|max:255',
+            'oauth_token' => 'required_if:marketplace_type,yandex-market|string|max:255',
+        ]);
+
+        $store->update([
+            'name' => $validated['name'],
+            'slug' => Str::slug($validated['name']),
+            'api_key' => $validated['api_key'] ?? $store->api_key,
+            'client_id' => $validated['client_id'] ?? $store->client_id,
+            'oauth_token' => $validated['oauth_token'] ?? $store->oauth_token,
+        ]);
+
+        return redirect()->route('profile')->with('success', 'Магазин обновлен');
+    }
+
+    public function deleteStore($id)
+    {
+        $store = MarketplaceConnection::findOrFail($id);
+        $store->delete();
+
+        return redirect()->route('profile')->with('success', 'Магазин удален');
     }
 }
