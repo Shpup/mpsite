@@ -1,14 +1,14 @@
-<nav x-data="{ open: false, searchOpen: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
+<nav x-data="{ open: true, searchOpen: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
-                <!-- Hamburger (три полосы для бокового меню) -->
+                <!-- Hamburger (переключение бокового меню) -->
                 <div class="flex items-center">
-                    <button @click="open = !open; if (open) alert('Меню открыто!')" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
+                    <button @click="open = !open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
                         <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                            <path x-show="!open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                             <path x-show="open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            <path x-show="!open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
                     </button>
                 </div>
@@ -60,49 +60,47 @@
         </div>
     </div>
 
-    <!-- Responsive Navigation Menu (боковое меню слева, покрывающее всю высоту) -->
-    <div x-show="open" class="fixed inset-y-0 left-0 z-40 w-64 bg-white dark:bg-gray-800 shadow-lg transform transition-transform duration-300 ease-in-out" :class="{ 'translate-x-0': open, '-translate-x-full': !open }">
+    <!-- Боковая панель (aside) -->
+    <aside x-show="open" class="fixed inset-y-0 left-0 z-30 w-64 bg-white dark:bg-gray-800 shadow-lg transition-all duration-300 ease-in-out" :class="{ 'w-64': open, 'w-16': !open }">
         <div class="h-full flex flex-col">
             <div class="flex-shrink-0 p-4 border-b">
-                <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Меню</h2>
+                <h2 x-show="open" class="text-lg font-semibold text-gray-900 dark:text-white">Меню</h2>
             </div>
             <div class="flex-1 overflow-y-auto pt-2 pb-4 space-y-1">
-                <a href="{{ route('dashboard') }}" class="block px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-gray-700">Dashboard</a>
-                <a href="{{ route('profile') }}" class="block px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-gray-700">Profile</a>
-                <a href="#" class="block px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-gray-700">Settings</a>
-                <a href="{{ route('logout') }}" class="block px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-gray-700" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                <a href="{{ route('dashboard') }}" class="block px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-gray-700" :class="{ 'pl-4': !open }">Dashboard</a>
+                <a href="{{ route('profile') }}" class="block px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-gray-700" :class="{ 'pl-4': !open }">Profile</a>
+                <a href="#" class="block px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-gray-700" :class="{ 'pl-4': !open }">Settings</a>
+                <a href="{{ route('logout') }}" class="block px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-gray-700" :class="{ 'pl-4': !open }" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">@csrf</form>
             </div>
         </div>
-    </div>
+    </aside>
 
-    <!-- Оверлей для блокировки основного контента -->
-    <div x-show="open" x-transition:enter="transition-opacity duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity duration-300" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 bg-black bg-opacity-50 z-30" @click="open = false"></div>
+    <!-- Сдвиг основного контента -->
+    <div class="content transition-all duration-300 ease-in-out" :class="{ 'ml-64': open, 'ml-16': !open }">
+        <!-- Основное содержимое будет здесь через @yield('content') в app.blade.php -->
+    </div>
 </nav>
 
 <style>
     .bg-smoke-light {
         background-color: rgba(0, 0, 0, 0.6);
     }
-    /* Сдвигаем основной контент при открытом меню */
-    .content {
-        margin-left: 0;
-        transition: margin-left 0.3s ease-in-out;
-    }
-    [x-cloak] {
-        display: none;
-    }
-    /* Убираем горизонтальный скролл при открытом меню */
+    /* Убираем горизонтальный скролл */
     body {
         overflow-x: hidden;
     }
-    /* Применяем сдвиг контента при открытом меню */
-    @media (min-width: 768px) {
-        .content[x-data] {
-            margin-left: 0;
+    /* Скрываем элементы до загрузки Alpine */
+    [x-cloak] {
+        display: none;
+    }
+    /* Адаптивное поведение */
+    @media (max-width: 767px) {
+        aside {
+            display: none; /* Скрываем на мобильных устройствах */
         }
-        .content[x-data][x-show="open"] {
-            margin-left: 64px; /* Ширина меню */
+        .content {
+            margin-left: 0 !important;
         }
     }
 </style>
