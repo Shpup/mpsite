@@ -2,13 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class MarketplaceConnection extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'user_id',
         'marketplace_type',
@@ -19,4 +16,9 @@ class MarketplaceConnection extends Model
         'oauth_token',
         'is_connected',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
